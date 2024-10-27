@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+
+
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
+    <link rel="stylesheet" href="todo.css">
+    <link rel="manifest" href="manifest/manifest.json">
+
+    <!-- Font Links -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Just+Me+Again+Down+Here&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div id="main-container">
+
+        <button id="install-button">Install App</button>
+
+
+        <form id="task-form">
+            <div class="input-group">
+                <input type="text" name="title" id="task-title" required placeholder="Task Title">
+            </div>
+            <div class="input-group">
+                <textarea name="details" id="task-details" rows="3" placeholder="Task Details"></textarea>
+            </div>
+
+            <div class="date-time-group">
+                <input type="date" name="date" id="task-date" min="2024-01-01" required>
+                <input type="time" name="time" id="task-time" required>
+            </div>
+
+            <div class="notification-group">
+                <input type="checkbox" name="notification" id="task-notification">
+                <label for="task-notification">Notify me</label>
+            </div>
+
+            <button type="submit" id="add-task-button">Add Task</button>
+        </form>
+
+        <div id="task-list">
+        </div>
+
+
+    </div>
+
+
+
+    <script src="service-worker.js"></script>
+    <script type="module" src="main.js"></script>
+   <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+        let deferredPrompt;
+        const installButton = document.getElementById('install-button');
+
+        // Listen for the beforeinstallprompt event
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt event fired.');
+            e.preventDefault(); // Prevent the mini info bar from appearing
+            deferredPrompt = e; // Stash the event for later use
+            installButton.style.display = 'block'; // Show the install button
+        });
+
+        // Handle the install button click
+        installButton.addEventListener('click', async () => {
+            console.log('Install button clicked.');
+            if (!deferredPrompt) {
+                console.warn('No install prompt available.');
+                return;
+            }
+
+            try {
+                // Show the prompt
+                await deferredPrompt.prompt();
+                // Clear the stored prompt
+                deferredPrompt = null;
+                installButton.style.display = 'none'; // Hide the install button after prompt
+            } catch (error) {
+                console.error('Error showing the install prompt:', error);
+            }
+        });
+
+        // Handle the appinstalled event
+        window.addEventListener('appinstalled', () => {
+            console.log('App was installed.');
+        });
+});
+
+    </script> 
+</body>
+
+</html>
