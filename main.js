@@ -1,5 +1,16 @@
 import { openDB } from 'https://cdn.jsdelivr.net/npm/idb@7/+esm';
 
+// Register service worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js') // Change this to your service worker file's path
+        .then(registration => {
+            console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+}
+
 // Open the IndexedDB
 const dbPromise = openDB('toDoList', 1, {
     upgrade(db) {
@@ -279,19 +290,5 @@ document.getElementById('task-form').addEventListener('submit', addTask);
 document.addEventListener('DOMContentLoaded', () => {
     setMinDateTime();
     updateTaskList();
-    Notification.requestPermission();
+    // Notification.requestPermission();
 });
-
-
-
-
-// Register service worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js') // Change this to your service worker file's path
-        .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-        })
-        .catch(error => {
-            console.error('Service Worker registration failed:', error);
-        });
-}
