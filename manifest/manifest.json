@@ -19,7 +19,7 @@
     "display": "standalone",
     "dir": "auto",
     "lang": "en-US",
-    "start_url": "To-Do.html",
+    "start_url": "index.html",
     "name": "To-do List",
     "short_name": "To-Do"
 }

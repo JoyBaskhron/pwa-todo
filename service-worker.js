@@ -1,6 +1,6 @@
 const CACHE_NAME = 'my-site-cache-v1';
 const FILES_TO_CACHE = [
-    'To-Do.html',
+    'index.html',
 ];
 
 if ('serviceWorker' in navigator) {
